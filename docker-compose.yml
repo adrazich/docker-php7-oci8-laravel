@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  php7-oci8-laravel:
+    container_name: fit-php7-oci8-laravel
+    network_mode: host
+    build: .
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "80:80"
