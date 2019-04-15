@@ -29,26 +29,6 @@ RUN printf "log_errors = On \nerror_log = /dev/stderr\n" > /usr/local/etc/php/co
 # Enable mod_rewrite
 RUN a2enmod rewrite
 
-# Install Oracle instantclient
-ADD instantclient-basiclite-linux.x64-18.5.0.0.0dbru.zip /tmp/
-ADD instantclient-sdk-linux.x64-18.5.0.0.0dbru.zip /tmp/
-ADD instantclient-sqlplus-linux.x64-18.5.0.0.0dbru.zip /tmp/
-
-RUN unzip /tmp/instantclient-basiclite-linux.x64-18.5.0.0.0dbru.zip -d /usr/local/
-RUN unzip /tmp/instantclient-sdk-linux.x64-18.5.0.0.0dbru.zip -d /usr/local/
-RUN unzip /tmp/instantclient-sqlplus-linux.x64-18.5.0.0.0dbru.zip -d /usr/local/
-
-ENV LD_LIBRARY_PATH /usr/local/instantclient_18_5/
-
-RUN ln -s /usr/local/instantclient_18_5 /usr/local/instantclient
-RUN ln -s /usr/local/instantclient/sqlplus /usr/bin/sqlplus
-
-RUN echo 'export LD_LIBRARY_PATH="/usr/local/instantclient"' >> /root/.bashrc
-RUN echo 'umask 002' >> /root/.bashrc
-
-RUN echo 'instantclient,/usr/local/instantclient' | pecl install oci8
-RUN echo "extension=oci8.so" > /usr/local/etc/php/conf.d/php-oci8.ini
-
 # Install Composer
 ENV COMPOSER_HOME /composer
 ENV PATH ./vendor/bin:/composer/vendor/bin:$PATH
