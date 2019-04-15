@@ -14,12 +14,6 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
     && docker-php-ext-install ldap
 
-# Install XDebug - Required for code coverage in PHPUnit
-RUN yes | pecl install xdebug \
-    && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
-
 # Copy over the php conf
 COPY docker-php.conf /etc/apache2/conf-enabled/docker-php.conf
 
